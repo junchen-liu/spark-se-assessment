@@ -1,5 +1,3 @@
-import logging
-
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 
@@ -7,6 +5,7 @@ from project.server import bcrypt, db
 from project.server.models import User
 
 auth_blueprint = Blueprint('auth', __name__)
+
 
 class RegisterAPI(MethodView):
     """
@@ -22,7 +21,8 @@ class RegisterAPI(MethodView):
 
     def post(self):
         # get the post data
-        post_data = request.get_json(); print(request)
+        post_data = request.get_json();
+        print(request)
         # check if user already exists
         user = User.query.filter_by(email=post_data.get('email')).first()
         if not user:
@@ -57,8 +57,16 @@ class RegisterAPI(MethodView):
             return make_response(jsonify(responseObject)), 202
 
 
+class UsersIndexAPI(MethodView):
+    def get(self):
+        all_users = User.query.all()
+        users = {"users": [{'ID': user.id, 'Email': user.email, 'Register Time': user.registered_on, 'Admin': user.admin} for user in all_users]}
+        return make_response(jsonify(users)), 201
+
+
 # define the API resources
 registration_view = RegisterAPI.as_view('register_api')
+users_index_view = UsersIndexAPI.as_view('users_index_api')
 
 # add Rules for API Endpoints
 auth_blueprint.add_url_rule(
@@ -66,3 +74,11 @@ auth_blueprint.add_url_rule(
     view_func=registration_view,
     methods=['POST', 'GET']
 )
+
+auth_blueprint.add_url_rule(
+    '/users/index',
+    view_func=users_index_view,
+    methods=['GET']
+)
+
+
