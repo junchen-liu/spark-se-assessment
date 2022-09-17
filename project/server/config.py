@@ -30,6 +30,6 @@ class TestingConfig(BaseConfig):
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
-    SECRET_KEY = 'diagnostic_secret'
+    SECRET_KEY = 'c9e8a971a93b42e0f7132a7485b351a5cc63d122cee59b7580dfefb15bee5e47'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///diagnostic'
+    SQLALCHEMY_DATABASE_URI = "postgres://vwwadmcfulsajn:c9e8a971a93b42e0f7132a7485b351a5cc63d122cee59b7580dfefb15bee5e47@ec2-52-207-90-231.compute-1.amazonaws.com:5432/d7arlu2c6lv7qe"
